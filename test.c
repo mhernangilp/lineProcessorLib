@@ -10,7 +10,7 @@ int	main(int argc, char **argv)
 {
 	int	N;
 
-	if (argc < 2 || argc > 3 || strncmp(argv[1], "-", 1))
+	if (argc < 2 || argc > 3)
 		exit_msg(ERR_ARGS);
 	if (argc == 3) {
 		if (atoi(argv[2]) < 1)
@@ -18,11 +18,11 @@ int	main(int argc, char **argv)
 		N = atoi(argv[2]);
 	} else
 		N = 10;
-	if (!strcmp(&argv[1][1], "head"))
+	if (!strcmp(argv[1], "-head"))
 		head(N);
-	else if (!strcmp(&argv[1][1], "tail"))
+	else if (!strcmp(argv[1], "-tail"))
 		tail(N);
-	else if (!strcmp(&argv[1][1], "longlines"))
+	else if (!strcmp(argv[1], "-longlines"))
 		longlines(N);
 	else
 		exit_msg(ERR_FUNC);
