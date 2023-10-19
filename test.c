@@ -16,9 +16,8 @@ int	main(int argc, char **argv)
 	if (argc < 2 || argc > 3)
 		exit_msg(ERR_ARGS);
 	if (argc == 3) {
-		if (atoi(argv[2]) < 1)
+		if ((N = atoi(argv[2])) < 1)
 			exit_msg(ERR_N);
-		N = atoi(argv[2]);
 	} else
 		N = 10;
 	if (!strcmp(argv[1], "-head"))
