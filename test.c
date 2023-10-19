@@ -3,11 +3,7 @@
 #define ERR_N "[numero de lineas] not valid"
 #define ERR_FUNC "<function> not valid: '-head', '-tail' or '-longlines'"
 
-static void	exit_msg(char *msg)
-{
-	printf("%s\n", msg);
-	exit (2);
-}
+static void	exit_msg(char *msg);
 
 int	main(int argc, char **argv)
 {
@@ -30,4 +26,10 @@ int	main(int argc, char **argv)
 	else
 		exit_msg(ERR_FUNC);
 	return (0);
+}
+
+static void	exit_msg(char *msg)
+{
+	printf("%s\n", msg);
+	exit (2);
 }
