@@ -1,7 +1,7 @@
 #include "libreria.h"
 
-static char	*cat_mem(char *s1, char *buf, int readed);
 static char	*read_input();
+static char	*cat_mem(char *s1, char *buf, int readed);
 
 int	head(int N)
 {
@@ -11,7 +11,11 @@ int	head(int N)
 
 int	tail(int N)
 {
+	char	*input;
+
 	printf("Hago tail con %d lineas\n", N);
+	if (!(input = read_input()))
+		return (-1);
 	return (0);
 }
 
@@ -21,25 +25,7 @@ int	longlines(int N)
 	return (0);
 }
 
-static char	*cat_mem(char *s1, char *buf, int readed)
-{
-	char	*target;
-	int	i,j;
-
-	//printf("----Tenemos ya '%s', malloc de %d con %d readed----\n", s1, (int)strlen(s1) + readed, readed);
-	if (!(target = malloc((strlen(s1) + readed) * sizeof(char))))
-		return (NULL);
-	i = -1;
-	while (s1[++i])
-		target[i] = s1[i];
-	j = -1;
-	while (++j < readed)
-		target[i++] = buf[j];
-	target[i] = '\0';
-	free(s1);
-	return target;
-}
-
+//Reads the input using a temporal buffer, returns a string with the input
 static char	*read_input()
 {
 	char	*buf;
@@ -63,4 +49,24 @@ static char	*read_input()
 		i += readed;
 	}
 	return (target);
+}
+
+//Concatenates the data in 's1' and 'buf' using dynamic memory and returns it
+static char	*cat_mem(char *s1, char *buf, int readed)
+{
+	char	*target;
+	int	i,j;
+
+	//printf("----Tenemos ya '%s', malloc de %d con %d readed----\n", s1, (int)strlen(s1) + readed, readed);
+	if (!(target = malloc((strlen(s1) + readed) * sizeof(char))))
+		return (NULL);
+	i = -1;
+	while (s1[++i])
+		target[i] = s1[i];
+	j = -1;
+	while (++j < readed)
+		target[i++] = buf[j];
+	target[i] = '\0';
+	free(s1);
+	return target;
 }
