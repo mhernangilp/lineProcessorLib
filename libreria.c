@@ -48,6 +48,7 @@ static char	*read_input()
 		readed = read(0, buf, BUFF_SIZE);
 		i += readed;
 	}
+	free(buf);
 	return (target);
 }
 
@@ -58,7 +59,7 @@ static char	*cat_mem(char *s1, char *buf, int readed)
 	int	i,j;
 
 	//printf("----Tenemos ya '%s', malloc de %d con %d readed----\n", s1, (int)strlen(s1) + readed, readed);
-	if (!(target = malloc((strlen(s1) + readed) * sizeof(char))))
+	if (!(target = malloc((strlen(s1) + readed + 1) * sizeof(char))))
 		return (NULL);
 	i = -1;
 	while (s1[++i])
