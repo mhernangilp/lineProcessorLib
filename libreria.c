@@ -1,5 +1,6 @@
 #include "libreria.h"
 
+static char	**split_lines(char *input);
 static char	*read_input();
 static char	*cat_mem(char *s1, char *buf, int readed);
 
@@ -12,10 +13,14 @@ int	head(int N)
 int	tail(int N)
 {
 	char	*input;
+	char	**lines;
 
 	printf("Hago tail con %d lineas\n", N);
 	if (!(input = read_input()))
 		return (-1);
+	if (!(lines = split_lines(input)))
+		return (-1);
+	free(input);
 	return (0);
 }
 
@@ -25,6 +30,11 @@ int	longlines(int N)
 	return (0);
 }
 
+//Splits the input in multiple strings separated by '\n', terminating in NULL
+static char	**split_lines(char *input)
+{
+	return (NULL);
+}
 //Reads the input using a temporal buffer, returns a string with the input
 static char	*read_input()
 {
