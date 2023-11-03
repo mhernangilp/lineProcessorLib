@@ -18,6 +18,7 @@ int	tail(int N)
 	printf("Hago tail con %d lineas\n", N);
 	if (!(input = read_input()))
 		return (-1);
+	printf("%s", input);
 	if (!(lines = split_lines(input)))
 		return (-1);
 	free(input);
@@ -41,23 +42,19 @@ static char	*read_input()
 	char	*buf;
 	char	*target;
 	int	readed;
-	int	i;
 
 	if(!(target = strdup("")))
 		return (NULL);
 	if (!(buf = malloc(BUFF_SIZE *  sizeof(char))))
 		return (NULL);
-	readed = read(0, buf, BUFF_SIZE);
-	i = readed;
-	while (readed) {
+	do {
+		readed = read(0, buf, BUFF_SIZE);
 		if (!(target = cat_mem(target, buf, readed))) {
 			free(buf);
 			free(target);
 			return (NULL);
 		}
-		readed = read(0, buf, BUFF_SIZE);
-		i += readed;
-	}
+	} while (readed);
 	free(buf);
 	return (target);
 }
