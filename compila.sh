@@ -2,8 +2,8 @@
 
 #Compilación
 gcc -c libreria.c -o libreria.o
-ar -rv libreria.a libreria.o
-gcc -o test test.c -L libreria.h libreria.a #-g3 -fsanitize=address
+ar -rv liblibreria.a libreria.o
+gcc -o test test.c -L ./ -llibreria #-g3 -fsanitize=address
 
 #Limpieza de objetos
 rm -rf *.a *.o
