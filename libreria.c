@@ -49,10 +49,12 @@ static char	*read_input()
 		return (NULL);
 	do {
 		readed = read(0, buf, BUFF_SIZE);
-		if (!(target = cat_mem(target, buf, readed))) {
-			free(buf);
-			free(target);
-			return (NULL);
+		if (readed) {
+			if (!(target = cat_mem(target, buf, readed))) {
+				free(buf);
+				free(target);
+				return (NULL);
+			}
 		}
 	} while (readed);
 	free(buf);
