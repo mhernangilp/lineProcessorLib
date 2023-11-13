@@ -3,6 +3,8 @@
 static char	**split_lines(char *input);
 static char	*read_input();
 static char	*cat_mem(char *s1, char *buf, int readed);
+static int lines_length(char **lines);
+static void print_tail(char **lines, int N, int max);
 
 int	head(int N)
 {
@@ -14,13 +16,17 @@ int	tail(int N)
 {
 	char	*input;
 	char	**lines;
+    int     max;
 
 	printf("Hago tail con %d lineas\n", N);
 	if (!(input = read_input()))
 		return (-1);
-	printf("%s", input);
 	if (!(lines = split_lines(input)))
 		return (-1);
+
+    max = lines_length(lines);
+    print_tail(lines, N, max);
+    
 	free(input);
 	return (0);
 }
@@ -29,6 +35,32 @@ int	longlines(int N)
 {
 	printf("Hago longlines con %d lineas\n", N);
 	return (0);
+}
+
+static void print_tail(char **lines, int N, int max)
+{
+    int     i;
+
+    i = max - N;
+    if (i < 0)
+        i = 0;
+    
+    while (lines[i])
+    {
+        printf("%s\n", lines[i]);
+        i++;
+    }
+}
+
+static int lines_length(char **lines)
+{
+    int     m;
+
+    m = 0;
+    while (lines[m])
+        m++;
+    
+    return(m);
 }
 
 //Splits the input in multiple strings separated by '\n', terminating in NULL
