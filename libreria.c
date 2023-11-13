@@ -1,11 +1,12 @@
 #include "libreria.h"
 
+static void	print_head(char **lines, int N, int max);
+static void	print_tail(char **lines, int N, int max);
+static int	lines_length(char **lines);
 static char	**split_lines(char *input);
 static char	*read_input();
-static void	print_head(char **lines, int N, int max);
 static char	*cat_mem(char *s1, char *buf, int readed);
-static int lines_length(char **lines);
-static void print_tail(char **lines, int N, int max);
+static void	free_lines(char **lines);
 
 int	head(int N)
 {
@@ -13,16 +14,37 @@ int	head(int N)
 	char	**lines;
 	int	max;
 
-	printf("Hago head con %d lineas\n", N);
 	if (!(input = read_input()))
 		return (-1);
-	printf("%s", input);
 	if (!(lines = split_lines(input)))
 		return (-1);
 	//comprobar input vacio
 	max = lines_length(lines);
 	print_head(lines, N, max);
 	free(input);
+	free_lines(lines);
+	return (0);
+}
+
+int	tail(int N)
+{
+	char	*input;
+	char	**lines;
+	int	max;
+
+	if (!(input = read_input()))
+		return (-1);
+	if (!(lines = split_lines(input)))
+		return (-1);
+	max = lines_length(lines);
+	print_tail(lines, N, max);
+	free(input);
+	free_lines(lines);
+	return (0);
+}
+
+int	longlines(int N)
+{
 	return (0);
 }
 
@@ -32,113 +54,88 @@ static void	print_head(char **lines, int N, int max)
 
 	i = 0;
 	while (i < N && i < max)
-		printf("%s", lines[i++]);
-}
-
-int	tail(int N)
-{
-	char	*input;
-	char	**lines;
-	int	max;
-
-	printf("Hago tail con %d lineas\n", N);
-	if (!(input = read_input()))
-		return (-1);
-	if (!(lines = split_lines(input)))
-		return (-1);
-	max = lines_length(lines);
-	print_tail(lines, N, max);
-	free(input);
-	return (0);
-}
-
-int	longlines(int N)
-{
-	printf("Hago longlines con %d lineas\n", N);
-	return (0);
+		printf("%s\n", lines[i++]);
 }
 
 static void print_tail(char **lines, int N, int max)
 {
-    int     i;
+	int     i;
 
-    i = max - N;
-    if (i < 0)
-        i = 0;
-    while (lines[i])
-    {
-        printf("%s\n", lines[i]);
-        i++;
-    }
+	i = max - N;
+	if (i < 0)
+		i = 0;
+	while (lines[i])
+	{
+		printf("%s\n", lines[i]);
+		i++;
+	}
 }
 
 static int lines_length(char **lines)
 {
-    int     m;
+	int     m;
 
-    m = 0;
-    while (lines[m])
-        m++;
-    return(m);
+	m = 0;
+	while (lines[m])
+		m++;
+	return(m);
 }
 
 //Splits the input in multiple strings separated by '\n', terminating in NULL
 static char **split_lines(char *input)
 {
-    char    **lines;
-    char    *buf, *token, *p;
-    char    *delimit = "\n";
-    int     num_lineas, i;
+	char    **lines;
+	char    *buf, *token, *p;
+	char    *delimit = "\n";
+	int     num_lineas, i;
 
-    // Inicializo bufer apuntando a input, num_lineas e i
-    buf = input;
-    num_lineas = 1;
-    i = 0;
+	// Inicializo bufer apuntando a input, num_lineas e i
+	buf = input;
+	num_lineas = 1;
+	i = 0;
 
-    // Para contar el numero de lineas que tiene el input (el buf)
-    while (*buf) {
-        if (*buf == '\n') {
-            num_lineas++;
-        }
-        buf++;
-    }
+	// Para contar el numero de lineas que tiene el input (el buf)
+	while (*buf) {
+		if (*buf == '\n') {
+			num_lineas++;
+		}
+		buf++;
+	}
 
-    if (!(p = strdup(input)))
-    {
-        free(p);
-        return (NULL);
-    }
+	if (!(p = strdup(input))) {
+		free(p);
+		return (NULL);
+	}
 
-    // Declaro token, que guardara las distintas lineas de la entrada y las ira pasando a lines
-    token = strtok(p, delimit);
-    if (!token)
-        return(NULL);
+	// Declaro token, que guardara las distintas lineas de la entrada y las ira pasando a lines
+	token = strtok(p, delimit);
+	if (!token)
+		return(NULL);
 
-    // Reservo memoria para lines (para los primeros huecos de puntero)
-    if(!(lines = (char **)calloc((num_lineas + 1), sizeof(char *)))) {
-        free(lines);
-        return (NULL);
-    }
+	// Reservo memoria para lines (para los primeros huecos de puntero)
+	if(!(lines = (char **)calloc((num_lineas + 1), sizeof(char *)))) {
+		free(lines);
+		return (NULL);
+	}
 
-    // Mientras exista token, hago una copia de token y la asigno al espacio de memoria reservado de lines correspondiente
-    while (token)
-    {
-        //printf("TOKEN %d: '%s'", i, token);
-        if(!(lines[i] = strdup(token))) {
-            for (int j = 0; j < i; j++) {
-                free(lines[j]);
-            }
-            return(NULL);
-        }
+	// Mientras exista token, hago una copia de token y la asigno al espacio de memoria reservado de lines correspondiente
+	while (token) {
+		//printf("TOKEN %d: '%s'", i, token);
+		if(!(lines[i] = strdup(token))) {
+			for (int j = 0; j < i; j++) {
+				free(lines[j]);
+			}
+			return(NULL);
+		}
+		token = strtok(NULL, delimit);
+		i++;
+	}
 
-        token = strtok(NULL, delimit);
-        i++;
-    }
-
-    lines[i] = NULL;
-    free(p);
-    return (lines);
+	lines[i] = NULL;
+	free(p);
+	return (lines);
 }
+
 //Reads the input using a temporal buffer, returns a string with the input
 static char	*read_input()
 {
@@ -182,4 +179,14 @@ static char	*cat_mem(char *s1, char *buf, int readed)
 	target[i] = '\0';
 	free(s1);
 	return target;
+}
+
+static void	free_lines(char **lines)
+{
+	int	i;
+
+	i = -1;
+	while (lines[++i])
+		free(lines[i]);
+	free(lines);
 }
