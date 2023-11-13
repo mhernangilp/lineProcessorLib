@@ -65,7 +65,6 @@ static void print_tail(char **lines, int N, int max)
     i = max - N;
     if (i < 0)
         i = 0;
-
     while (lines[i])
     {
         printf("%s\n", lines[i]);
@@ -80,7 +79,6 @@ static int lines_length(char **lines)
     m = 0;
     while (lines[m])
         m++;
-
     return(m);
 }
 
