@@ -120,7 +120,6 @@ static char **split_lines(char *input)
 
 	// Mientras exista token, hago una copia de token y la asigno al espacio de memoria reservado de lines correspondiente
 	while (token) {
-		//printf("TOKEN %d: '%s'", i, token);
 		if(!(lines[i] = strdup(token))) {
 			for (int j = 0; j < i; j++) {
 				free(lines[j]);
@@ -167,7 +166,6 @@ static char	*cat_mem(char *s1, char *buf, int readed)
 	char	*target;
 	int	i,j;
 
-	//printf("----Tenemos ya '%s', malloc de %d con %d readed----\n", s1, (int)strlen(s1) + readed, readed);
 	if (!(target = malloc((strlen(s1) + readed + 1) * sizeof(char))))
 		return (NULL);
 	i = -1;
