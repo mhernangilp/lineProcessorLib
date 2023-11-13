@@ -7,6 +7,7 @@ static char	**split_lines(char *input);
 static char	*read_input();
 static char	*cat_mem(char *s1, char *buf, int readed);
 static void	free_lines(char **lines);
+static void bubbleSort(char **lines, int n);
 
 int	head(int N)
 {
@@ -18,6 +19,7 @@ int	head(int N)
 		return (-1);
 	if (!(lines = split_lines(input)))
 		return (-1);
+
 	//comprobar input vacio
 	max = lines_length(lines);
 	print_head(lines, N, max);
@@ -36,6 +38,7 @@ int	tail(int N)
 		return (-1);
 	if (!(lines = split_lines(input)))
 		return (-1);
+
 	max = lines_length(lines);
 	print_tail(lines, N, max);
 	free(input);
@@ -45,7 +48,36 @@ int	tail(int N)
 
 int	longlines(int N)
 {
+	char	*input;
+	char	**lines;
+	int	max;
+
+	if (!(input = read_input()))
+		return (-1);
+	if (!(lines = split_lines(input)))
+		return (-1);
+
+	max = lines_length(lines);
+	bubbleSort(lines, max);
+	print_head(lines, N, max);
+	free(input);
+	free_lines(lines);
 	return (0);
+}
+
+static void bubbleSort(char **lines, int n)
+{
+	char	*aux;
+
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (strlen(lines[j]) < strlen(lines[j + 1])) {
+				aux = lines[j + 1];
+				lines[j + 1] = lines[j];
+				lines[j] = aux;
+            }
+        }
+    }
 }
 
 static void	print_head(char **lines, int N, int max)
@@ -54,7 +86,7 @@ static void	print_head(char **lines, int N, int max)
 
 	i = 0;
 	while (i < N && i < max)
-		printf("%s\n", lines[i++]);
+		printf("%s", lines[i++]);
 }
 
 static void print_tail(char **lines, int N, int max)
@@ -66,7 +98,7 @@ static void print_tail(char **lines, int N, int max)
 		i = 0;
 	while (lines[i])
 	{
-		printf("%s\n", lines[i]);
+		printf("%s", lines[i]);
 		i++;
 	}
 }
@@ -126,6 +158,7 @@ static char **split_lines(char *input)
 			}
 			return(NULL);
 		}
+		lines[i] = cat_mem(lines[i], "\n", 1);
 		token = strtok(NULL, delimit);
 		i++;
 	}
