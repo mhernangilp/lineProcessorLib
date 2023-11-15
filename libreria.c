@@ -7,7 +7,7 @@ static char	**split_lines(char *input);
 static char	*read_input();
 static char	*cat_mem(char *s1, char *buf, int readed);
 static void	free_lines(char **lines);
-static void bubbleSort(char **lines, int n);
+static void	bubbleSort(char **lines, int n);
 
 int	head(int N)
 {
@@ -15,14 +15,17 @@ int	head(int N)
 	char	**lines;
 	int	max;
 
+	//Leemos por pantalla y separamos las lineas
 	if (!(input = read_input()))
-		return (-1);
+		return (1);
 	if (!(lines = split_lines(input)))
-		return (-1);
+		return (2);
 
-	//comprobar input vacio
+	//Ejecutamos la funcionalidad principal
 	max = lines_length(lines);
 	print_head(lines, N, max);
+
+	//Liberamos todo
 	free(input);
 	free_lines(lines);
 	return (0);
@@ -34,13 +37,17 @@ int	tail(int N)
 	char	**lines;
 	int	max;
 
+	//Leemos por pantalla y separamos las lineas
 	if (!(input = read_input()))
-		return (-1);
+		return (1);
 	if (!(lines = split_lines(input)))
-		return (-1);
+		return (2);
 
+	//Ejecutamos la funcionalidad principal
 	max = lines_length(lines);
 	print_tail(lines, N, max);
+	
+	//Liberamos todo
 	free(input);
 	free_lines(lines);
 	return (0);
@@ -52,34 +59,40 @@ int	longlines(int N)
 	char	**lines;
 	int	max;
 
+	//Leemos por pantalla y separamos las lineas
 	if (!(input = read_input()))
-		return (-1);
+		return (1);
 	if (!(lines = split_lines(input)))
-		return (-1);
-
+		return (2);
+	
+	//Ejecutamos la funcionalidad principal
 	max = lines_length(lines);
 	bubbleSort(lines, max);
 	print_head(lines, N, max);
+	
+	//Liberamos todo
 	free(input);
 	free_lines(lines);
 	return (0);
 }
 
+//Ordena las lineas segun su tamaño
 static void bubbleSort(char **lines, int n)
 {
 	char	*aux;
 
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (strlen(lines[j]) < strlen(lines[j + 1])) {
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = 0; j < n - i - 1; j++) {
+			if (strlen(lines[j]) < strlen(lines[j + 1])) {
 				aux = lines[j + 1];
 				lines[j + 1] = lines[j];
 				lines[j] = aux;
-            }
-        }
-    }
+			}
+		}
+	}
 }
 
+//Printea las lineas en caso de "head" (longlines también)
 static void	print_head(char **lines, int N, int max)
 {
 	int	i;
@@ -89,6 +102,7 @@ static void	print_head(char **lines, int N, int max)
 		printf("%s", lines[i++]);
 }
 
+//Printea las lineas en caso de "tail"
 static void print_tail(char **lines, int N, int max)
 {
 	int     i;
@@ -103,6 +117,7 @@ static void print_tail(char **lines, int N, int max)
 	}
 }
 
+//Devuelve el numero de lineas que contiene "lines"
 static int lines_length(char **lines)
 {
 	int     m;
@@ -113,7 +128,7 @@ static int lines_length(char **lines)
 	return(m);
 }
 
-//Splits the input in multiple strings separated by '\n', terminating in NULL
+//Separa el input en multiples strings separados por '\n', terminando en NULL
 static char **split_lines(char *input)
 {
 	char    **lines;
@@ -168,17 +183,20 @@ static char **split_lines(char *input)
 	return (lines);
 }
 
-//Reads the input using a temporal buffer, returns a string with the input
+//Lee de entrada standar usando un buffer temporal, devuelve un string con lo que ha leido
 static char	*read_input()
 {
 	char	*buf;
 	char	*target;
 	int	readed;
 
+	//Inicializamos el string que vamos a devolver y el buffer
 	if(!(target = strdup("")))
 		return (NULL);
 	if (!(buf = malloc(BUFF_SIZE *  sizeof(char))))
 		return (NULL);
+
+	//Leemos en bucle hasta que se cierre la entrada estandar
 	do {
 		readed = read(0, buf, BUFF_SIZE);
 		if (readed) {
@@ -193,15 +211,18 @@ static char	*read_input()
 	return (target);
 }
 
-//Concatenates the data in 's1' and 'buf' using dynamic memory and returns it
+//Concatena el string "s1" y "buf"
 static char	*cat_mem(char *s1, char *buf, int readed)
 {
 	char	*target;
 	int	i,j;
 
+	//Asignamos memoria dinamica al string que vamos a devolver
 	if (!(target = malloc((strlen(s1) + readed + 1) * sizeof(char))))
 		return (NULL);
 	i = -1;
+
+	//Concatenamos
 	while (s1[++i])
 		target[i] = s1[i];
 	j = -1;
@@ -212,6 +233,7 @@ static char	*cat_mem(char *s1, char *buf, int readed)
 	return target;
 }
 
+//Libera completamente la variable "lines"
 static void	free_lines(char **lines)
 {
 	int	i;

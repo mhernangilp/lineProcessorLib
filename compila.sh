@@ -3,7 +3,7 @@
 #Compilación
 gcc -c libreria.c -o libreria.o
 ar -rv liblibreria.a libreria.o
-gcc -o test test.c -I . -L . -llibreria -Wall -Werror -Wextra #-g3 -fsanitize=address
+gcc -o test test.c -I . -L . -llibreria -Wall -Werror -Wextra
 
 #Limpieza de objetos
 rm -rf *.o

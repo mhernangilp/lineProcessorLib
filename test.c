@@ -17,18 +17,16 @@ int	main(int argc, char **argv)
 	} else
 		N = 10;
 	if (!strcmp(argv[1], "-head"))
-		head(N);
-	else if (!strcmp(argv[1], "-tail"))
-		tail(N);
-	else if (!strcmp(argv[1], "-longlines"))
-		longlines(N);
-	else
-		exit_msg(ERR_FUNC);
-	return (0);
+		return (head(N));
+	if (!strcmp(argv[1], "-tail"))
+		return (tail(N));
+	if (!strcmp(argv[1], "-longlines"))
+		return (longlines(N));
+	exit_msg(ERR_FUNC);
 }
 
 static void	exit_msg(char *msg)
 {
 	printf("%s\n", msg);
-	exit (2);
+	exit (1);
 }
