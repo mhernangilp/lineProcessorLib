@@ -17,9 +17,9 @@ int	head(int N)
 
 	//Leemos por pantalla y separamos las lineas
 	if (!(input = read_input()))
-		return (1);
-	if (!(lines = split_lines(input)))
 		return (2);
+	if (!(lines = split_lines(input)))
+		return (3);
 
 	//Ejecutamos la funcionalidad principal
 	max = lines_length(lines);
@@ -39,9 +39,9 @@ int	tail(int N)
 
 	//Leemos por pantalla y separamos las lineas
 	if (!(input = read_input()))
-		return (1);
-	if (!(lines = split_lines(input)))
 		return (2);
+	if (!(lines = split_lines(input)))
+		return (3);
 
 	//Ejecutamos la funcionalidad principal
 	max = lines_length(lines);
@@ -61,9 +61,9 @@ int	longlines(int N)
 
 	//Leemos por pantalla y separamos las lineas
 	if (!(input = read_input()))
-		return (1);
-	if (!(lines = split_lines(input)))
 		return (2);
+	if (!(lines = split_lines(input)))
+		return (3);
 	
 	//Ejecutamos la funcionalidad principal
 	max = lines_length(lines);
