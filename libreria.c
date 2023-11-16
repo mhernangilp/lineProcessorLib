@@ -1,4 +1,9 @@
 #include "libreria.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#define BUFF_SIZE 10
 
 static void	print_head(char **lines, int N, int max);
 static void	print_tail(char **lines, int N, int max);
