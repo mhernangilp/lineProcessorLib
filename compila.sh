@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Compilación
-gcc -c libreria.c -o libreria.o
+gcc -c libreria.c -o libreria.o -Wall -Werror -Wextra
 ar -rv liblibreria.a libreria.o
 gcc -o test test.c -I . -L . -llibreria -Wall -Werror -Wextra
 
