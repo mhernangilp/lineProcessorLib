@@ -53,6 +53,7 @@ int	tail(int N)
 	return (0);
 }
 
+//Añadimos una linea al final de "lines"
 static int	add_line_tail(char **lines, char *input, int read, int N)
 {
 	int	i = 0;
@@ -106,6 +107,7 @@ int	longlines(int N)
 	return (0);
 }
 
+//Añade una linea si es mayor que al menos de una de las que ya están
 static int	add_line_long(char **lines, char *input, int N)
 {
 	int	i = -1;
