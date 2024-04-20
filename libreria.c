@@ -5,7 +5,7 @@
 #include <unistd.h>
 #define BUFF_SIZE 1024
 
-static int	add_line_tail(char **lines, char *input, int read, int N);
+static int	add_line_tail(char **lines, char *input, int N);
 static int	add_line_long(char **lines, char *input, int N);
 static void	free_lines(char **lines);
 
@@ -26,25 +26,26 @@ int	tail(int N)
 {
 	char	input[BUFF_SIZE];
 	char	**lines;
-	int	read = 0;
 	int	i;
 
 	//Asignamos memoria y comprobamos errores de memoria
 	lines = malloc((N + 1) * sizeof(char *));
 	if (!lines)
 		return (2);
+	i = -1;
+	while (++i < N)
+		lines[i] = strdup("");
 	lines[N] = NULL;
 
 	//Leemos las lineas y las vamos asignando
 	while (fgets(input, BUFF_SIZE, stdin)) {
-		read++;
-		if (add_line_tail(lines, input, read, N))
+		if (add_line_tail(lines, input, N))
 			return (2);
 	}
 
 	//Mostramos las ultimas lineas leidas
 	i = -1;
-	while (++i < read && lines[i]) {
+	while (lines[++i]) {
 		printf("%s", lines[i]);
 	}
 
@@ -54,24 +55,16 @@ int	tail(int N)
 }
 
 //Añadimos una linea al final de "lines"
-static int	add_line_tail(char **lines, char *input, int read, int N)
+static int	add_line_tail(char **lines, char *input, int N)
 {
-	int	i = 0;
+	int	i = -1;
 
-	if (read <= N) {
-		lines[read - 1] = strdup(input);
-		if (!lines[read - 1])
-			return (1);
-	} else {
-		free(lines[0]);
-		while (lines[i + 1]) {
-			lines[i] = lines[i + 1];
-			i++;
-		}
-		lines[i] = strdup(input);
-		if (!lines[i])
-			return (1);
-	}
+	free(lines[0]);
+	while (++i + 1 < N)
+		lines[i] = lines[i + 1];
+	lines[i] = strdup(input);
+	if (!lines[i])
+		return (1);
 	return (0);
 }
 
