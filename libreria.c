@@ -6,7 +6,7 @@
 #define BUFF_SIZE 1024
 
 static int	add_line_tail(char **lines, char *input, int read, int N);
-static int	add_line_long(char **lines, char *input, int read, int N);
+static int	add_line_long(char **lines, char *input, int N);
 static void	free_lines(char **lines);
 
 int	head(int N)
@@ -78,25 +78,26 @@ int	longlines(int N)
 {
 	char	input[BUFF_SIZE];
 	char	**lines;
-	int	read = 0;
 	int	i;
 
 	//Asignamos memoria y comprobamos errores de memoria
 	lines = malloc((N + 1) * sizeof(char *));
 	if (!lines)
 		return (2);
+	i = -1;
+	while (++i < N)
+		lines[i] = strdup("");
 	lines[N] = NULL;
 
 	//Leemos las lineas y las vamos asignando con el algoritmo
 	while (fgets(input, BUFF_SIZE, stdin)) {
-		read++;
-		if (add_line_long(lines, input, read, N))
+		if (add_line_long(lines, input, N))
 			return (2);
 	}
 
 	//Mostramos las lineas mas largas
 	i = -1;
-	while (++i < read && lines[i]) {
+	while (lines[++i]) {
 		printf("%s", lines[i]);
 	}
 
@@ -105,8 +106,22 @@ int	longlines(int N)
 	return (0);
 }
 
-static int	add_line_long(char **lines, char *input, int read, int N)
+static int	add_line_long(char **lines, char *input, int N)
 {
+	int	i = -1;
+	int	end = N;
+
+	while (++i < N) {
+		if (strlen(lines[i]) < strlen(input)) {
+			free(lines[--end]);
+			while (--end >= i)
+				lines[end + 1] = lines[end];
+			lines[i] = strdup(input);
+			if (!lines[i])
+				return (1);
+			return (0);
+		}
+	}
 	return (0);
 }
 
