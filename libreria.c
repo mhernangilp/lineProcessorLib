@@ -33,8 +33,11 @@ int	tail(int N)
 	if (!lines)
 		return (2);
 	i = -1;
-	while (++i < N)
+	while (++i < N) {
 		lines[i] = strdup("");
+		if (!lines[i])
+			return (2);
+	}
 	lines[N] = NULL;
 
 	//Leemos las lineas y las vamos asignando
@@ -79,8 +82,11 @@ int	longlines(int N)
 	if (!lines)
 		return (2);
 	i = -1;
-	while (++i < N)
+	while (++i < N) {
 		lines[i] = strdup("");
+		if (!lines[i])
+			return (2);
+	}
 	lines[N] = NULL;
 
 	//Leemos las lineas y las vamos asignando con el algoritmo
